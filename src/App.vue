@@ -13,20 +13,20 @@ export default {
   data(){
       return{
           texts: [],
-          tempTexts: []
+          todosAmount: 0
       }
   },
   methods:{
     addToList(text){
+      this.todosAmount++
       this.texts.push({
         text: text,
-        status: 'Not started'
+        status: 'Not started',
+        index: this.todosAmount
       })
     },
     removeFromList(index){
-      this.tempTexts = this.texts.splice(index, 1)
-      // this.texts = this.texts.splice(index, 1)
-      this.texts = this.tempTexts
+      this.texts.splice(index, 1)
     }
   }
 }

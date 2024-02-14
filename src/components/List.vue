@@ -9,7 +9,7 @@
             <h4 class="list-button">Remove</h4>
         </li>
         <li v-for="text, index in texts">
-            <p class="list-index">{{ index+1 }}</p>
+            <p class="list-index">{{ text.index }}</p>
             <p class="list-checkbox"><input type="checkbox"></p>
             <p class="list-name">{{ text.text }}</p>
             <p class="list-status">{{ text.status }}</p>
