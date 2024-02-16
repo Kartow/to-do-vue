@@ -9,7 +9,7 @@
             <h4 class="list-button">Remove</h4>
         </li>
         <li v-for="text, index in texts">
-            <p class="list-index">{{ text.index }}</p>
+            <p class="list-index">{{ index+1 }}</p>
             <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
             <p class="list-name">{{ text.text }}</p>
             <p class="list-status done" v-if="text.status">Done</p>
@@ -25,7 +25,16 @@ export default{
     props: ['texts'],
     methods:{
         remove(index){
-            this.$emit('remove', index)
+            let lis = document.querySelectorAll('ul>li')
+            lis[index+1].classList = 'li-remove-animation'
+            lis[index+1].style.opacity = '0'
+            setTimeout(()=>{
+                this.$emit('remove', index)
+                lis.forEach((li)=>{
+                    li.classList = ''
+                    li.style.opacity = '1'
+                })
+            }, 300)
         }
     }
 }
@@ -33,6 +42,12 @@ export default{
 
 <style lang="scss" scoped>
 $fontsize: 20px;
+
+@keyframes remove {
+    0% {opacity: 1;}
+    100% {opacity: 0;}
+}
+
 ul{
     width: 100%;
     list-style-type: none;
@@ -45,6 +60,7 @@ ul{
         min-height: 60px;
         justify-content: space-between;
         border-bottom: 1px solid #ccc;
+        opacity: 1;
         p, h4{
             word-break: break-all;
             margin: 0;
@@ -81,6 +97,9 @@ ul{
             color: crimson;
         }
     }
+}
+.li-remove-animation{
+    animation: remove .3s ease-out;
 }
 
 </style>

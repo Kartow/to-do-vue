@@ -14,7 +14,9 @@ export default{
     },
     methods:{
         add(){
-            this.$emit('add', this.text)
+            if(this.text){
+                this.$emit('add', this.text)
+            }
             this.text = ''
         }
     }

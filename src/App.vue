@@ -12,8 +12,7 @@ export default {
   components: { Inputarea, List },
   data(){
       return{
-          texts: [],
-          todosAmount: 0
+          texts: []
       }
   },
   methods:{
@@ -22,7 +21,6 @@ export default {
       this.texts.push({
         text: text,
         status: false,
-        index: this.todosAmount
       })
     },
     removeFromList(index){
