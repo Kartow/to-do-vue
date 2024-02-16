@@ -21,7 +21,7 @@ export default {
       this.todosAmount++
       this.texts.push({
         text: text,
-        status: 'Not started',
+        status: false,
         index: this.todosAmount
       })
     },

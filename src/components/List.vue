@@ -10,9 +10,10 @@
         </li>
         <li v-for="text, index in texts">
             <p class="list-index">{{ text.index }}</p>
-            <p class="list-checkbox"><input type="checkbox"></p>
+            <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
             <p class="list-name">{{ text.text }}</p>
-            <p class="list-status">{{ text.status }}</p>
+            <p class="list-status done" v-if="text.status">Done</p>
+            <p class="list-status not-started" v-else>Not started</p>
             <p class="list-button"><img></p>
             <p class="list-button"><img src="../assets/bin.png" @click="remove(index)"></p>
         </li>
@@ -72,6 +73,12 @@ ul{
         }
         .list-button{
             flex: 0 0 15%;
+        }
+        .done{
+            color: forestgreen;
+        }
+        .not-started{
+            color: crimson;
         }
     }
 }
