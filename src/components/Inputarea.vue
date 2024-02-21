@@ -1,6 +1,6 @@
 <template>
     <div id="inputarea">
-        <input type="text" v-model="text" placeholder="Write here" @keyup.enter="add">
+        <input id="enter-input" type="text" v-model="text" placeholder="Write here" @keyup.enter="add">
         <img @click="add" src="../assets/send_black.png">
     </div>
 </template>
@@ -16,8 +16,8 @@ export default{
         add(){
             if(this.text){
                 this.$emit('add', this.text)
+                this.text = ''
             }
-            this.text = ''
         }
     }
 }

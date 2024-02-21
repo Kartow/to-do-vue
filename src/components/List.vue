@@ -8,13 +8,14 @@
             <h4 class="list-button">Edit</h4>
             <h4 class="list-button">Remove</h4>
         </li>
-        <li v-for="text, index in texts">
+        <li v-for="(text, index) in texts">
             <p class="list-index">{{ index+1 }}</p>
             <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
-            <p class="list-name">{{ text.text }}</p>
+            <input class="list-name" :id="'edit-input-'+index" type="text" v-if="text.editing" v-model="text.text" @keyup.enter="doneEdit(index)">
+            <p class="list-name" v-else>{{ text.text }}</p>
             <p class="list-status done" v-if="text.status">Done</p>
             <p class="list-status not-started" v-else>Not started</p>
-            <p class="list-button"><img></p>
+            <p class="list-button"><img src="../assets/pencil.png" @click="startEdit(index)"></p>
             <p class="list-button"><img src="../assets/bin.png" @click="remove(index)"></p>
         </li>
     </ul>
@@ -35,6 +36,12 @@ export default{
                     li.style.opacity = '1'
                 })
             }, 300)
+        },
+        startEdit(index){
+            this.$emit('startEdit', index)
+        },
+        doneEdit(index){
+            this.$emit('doneEdit', index)
         }
     }
 }
@@ -61,7 +68,7 @@ ul{
         justify-content: space-between;
         border-bottom: 1px solid #ccc;
         opacity: 1;
-        p, h4{
+        p, h4, input[type=text]{
             word-break: break-all;
             margin: 0;
             display: flex;
@@ -71,6 +78,14 @@ ul{
                 height: 30px;
                 cursor: pointer;
             }
+        }
+        input[type=text]{
+            border: none;
+            font-size: 1rem;
+            text-align: center;
+            font-size: $fontsize;
+            padding: 0;
+            width: 0;
         }
         .list-index{
             flex: 0 0 5%;
