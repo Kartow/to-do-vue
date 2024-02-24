@@ -1,6 +1,6 @@
 <template>
   <Inputarea @add="addToList"/>
-  <List @remove="removeFromList" @startEdit="startEdit" @doneEdit="editItem" :texts="texts"/>
+  <List ref="List"/>
 </template>
 
 <script>
@@ -10,30 +10,9 @@ import List from './components/List.vue'
 export default {
   name: 'App',
   components: { Inputarea, List },
-  data(){
-      return{
-          texts: []
-      }
-  },
   methods:{
     addToList(text){
-      this.texts.push({
-        text: text,
-        status: false,
-        editing: false
-      })
-    },
-    removeFromList(index){
-      this.texts.splice(index, 1)
-    },
-    editItem(index){
-      this.texts[index].editing = !this.texts[index].editing
-    },
-    startEdit(index){
-      this.editItem(index)
-      this.$nextTick(() => {
-        document.querySelector(`#edit-input-${index}`).focus()
-      })
+      this.$refs.List.add(text)
     }
   }
 }

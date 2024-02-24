@@ -8,6 +8,30 @@
             <h4 class="list-button">Edit</h4>
             <h4 class="list-button">Remove</h4>
         </li>
+    </ul>
+    <draggable v-model="texts" tag="ul">
+        <template #item="{ element: text, index }">
+            <li>
+                <p class="list-index">{{ index+1 }}</p>
+                <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
+                <input class="list-name" :id="'edit-input-'+index" type="text" v-if="text.editing" v-model="text.text" @keyup.enter="doneEdit(index)">
+                <p class="list-name" v-else>{{ text.text }}</p>
+                <p class="list-status done" v-if="text.status">Done</p>
+                <p class="list-status not-started" v-else>Not started</p>
+                <p class="list-button"><img src="../assets/pencil.png" @click="startEdit(index)"></p>
+                <p class="list-button"><img src="../assets/bin.png" @click="remove(index)"></p>
+            </li>
+        </template>
+    </draggable>
+    <!-- <ul>
+        <li>
+            <h4 class="list-index">#</h4>
+            <h4 class="list-checkbox"></h4>
+            <h4 class="list-name">Name</h4>
+            <h4 class="list-status">Status</h4>
+            <h4 class="list-button">Edit</h4>
+            <h4 class="list-button">Remove</h4>
+        </li>
         <li v-for="(text, index) in texts">
             <p class="list-index">{{ index+1 }}</p>
             <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
@@ -18,30 +42,47 @@
             <p class="list-button"><img src="../assets/pencil.png" @click="startEdit(index)"></p>
             <p class="list-button"><img src="../assets/bin.png" @click="remove(index)"></p>
         </li>
-    </ul>
+    </ul> -->
 </template>
 
 <script>
+import draggable from 'vuedraggable'
+
 export default{
-    props: ['texts'],
+    components: { draggable },
+    data(){
+        return{
+            texts: []
+        }
+    },
     methods:{
+        add(text){
+            this.texts.push({
+                text: text,
+                status: false,
+                editing: false
+            })
+        },
         remove(index){
             let lis = document.querySelectorAll('ul>li')
             lis[index+1].classList = 'li-remove-animation'
             lis[index+1].style.opacity = '0'
             setTimeout(()=>{
-                this.$emit('remove', index)
+                this.texts.splice(index, 1)
                 lis.forEach((li)=>{
                     li.classList = ''
                     li.style.opacity = '1'
                 })
             }, 300)
         },
-        startEdit(index){
-            this.$emit('startEdit', index)
-        },
         doneEdit(index){
-            this.$emit('doneEdit', index)
+            this.texts[index].editing = !this.texts[index].editing
+        },
+        startEdit(index){
+            this.doneEdit(index)
+            this.$nextTick(() => {
+                document.querySelector(`#edit-input-${index}`).focus()
+            })
         }
     }
 }
