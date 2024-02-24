@@ -9,7 +9,7 @@
             <h4 class="list-button">Remove</h4>
         </li>
     </ul>
-    <draggable v-model="texts" tag="ul">
+    <draggable v-model="texts" tag="ul" :animation="300">
         <template #item="{ element: text, index }">
             <li>
                 <p class="list-index">{{ index+1 }}</p>
