@@ -1,8 +1,7 @@
 <template>
     <ul>
         <li>
-            <h4 class="list-index">#</h4>
-            <h4 class="list-checkbox"></h4>
+            <h4 class="list-checkbox">☑️</h4>
             <h4 class="list-name">Name</h4>
             <h4 class="list-status">Status</h4>
             <h4 class="list-button">Edit</h4>
@@ -12,7 +11,6 @@
     <draggable v-model="texts" tag="ul" :animation="300">
         <template #item="{ element: text, index }">
             <li>
-                <p class="list-index">{{ index+1 }}</p>
                 <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
                 <input class="list-name" :id="'edit-input-'+index" type="text" v-if="text.editing" v-model="text.text" @keyup.enter="doneEdit(index)">
                 <p class="list-name" v-else>{{ text.text }}</p>
@@ -128,13 +126,10 @@ ul{
             padding: 0;
             width: 0;
         }
-        .list-index{
-            flex: 0 0 5%;
-        }
         .list-checkbox{
-            flex: 0 0 5%;
+            flex: 0 0 10%;
             input{
-                transform: scale(1.5);
+                transform: scale(2);
             }
         }
         .list-name{
