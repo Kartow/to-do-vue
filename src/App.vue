@@ -1,4 +1,7 @@
 <template>
+  <div id="logo">
+    <img src="./assets/logo.png">
+  </div>
   <Inputarea @add="addToList"/>
   <List ref="List"/>
 </template>
@@ -20,7 +23,7 @@ export default {
 
 <style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@200;300;400;500;600;700;800&display=swap');
-
+  
 $fontsize: 20px;
 $mobilefontsize: 10px;
 #app{
@@ -34,8 +37,16 @@ $mobilefontsize: 10px;
   input{
     font-family: 'Mukta', sans-serif;
   }
+  #logo{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    img{
+      width: 20%;
+    }
+  }
   @media (max-width: 1200px){
-    width: 90vw;
+    width: 80vw;
   }
   @media (max-width: 600px){
     font-size: $mobilefontsize;
