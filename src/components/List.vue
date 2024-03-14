@@ -8,7 +8,7 @@
             <h4 class="list-button">Remove</h4>
         </li>
     </ul>
-    <draggable v-model="texts" tag="ul" :animation="300">
+    <draggable v-model="texts" tag="ul" :animation="300" :disabled="isEditing">
         <template #item="{ element: text, index }">
             <li>
                 <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
@@ -21,26 +21,6 @@
             </li>
         </template>
     </draggable>
-    <!-- <ul>
-        <li>
-            <h4 class="list-index">#</h4>
-            <h4 class="list-checkbox"></h4>
-            <h4 class="list-name">Name</h4>
-            <h4 class="list-status">Status</h4>
-            <h4 class="list-button">Edit</h4>
-            <h4 class="list-button">Remove</h4>
-        </li>
-        <li v-for="(text, index) in texts">
-            <p class="list-index">{{ index+1 }}</p>
-            <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
-            <input class="list-name" :id="'edit-input-'+index" type="text" v-if="text.editing" v-model="text.text" @keyup.enter="doneEdit(index)">
-            <p class="list-name" v-else>{{ text.text }}</p>
-            <p class="list-status done" v-if="text.status">Done</p>
-            <p class="list-status not-started" v-else>Not started</p>
-            <p class="list-button"><img src="../assets/pencil.png" @click="startEdit(index)"></p>
-            <p class="list-button"><img src="../assets/bin.png" @click="remove(index)"></p>
-        </li>
-    </ul> -->
 </template>
 
 <script>
@@ -50,7 +30,8 @@ export default{
     components: { draggable },
     data(){
         return{
-            texts: []
+            texts: [],
+            isEditing: false
         }
     },
     methods:{
@@ -75,12 +56,24 @@ export default{
         },
         doneEdit(index){
             this.texts[index].editing = !this.texts[index].editing
+            let editingCount = false
+            this.texts.forEach((text) => {
+                if (text.editing){
+                    editingCount = true
+                }
+            })
+            if(editingCount){
+                this.isEditing = true
+            } else {
+                this.isEditing = false
+            }
         },
         startEdit(index){
             this.doneEdit(index)
             this.$nextTick(() => {
                 document.querySelector(`#edit-input-${index}`).focus()
             })
+            this.isEditing = true
         }
     }
 }
