@@ -12,11 +12,11 @@
         <template #item="{ element: text, index }">
             <li>
                 <p class="list-checkbox"><input type="checkbox" v-model="text.status"></p>
-                <input class="list-name" :id="'edit-input-'+index" type="text" v-if="text.editing" v-model="text.text" @keyup.enter="doneEdit(index)">
+                <input class="list-name" :id="'edit-input-'+index" type="text" v-if="text.editing" v-model="text.text" @keyup.enter="doneEdit(index)" @focusout="doneEdit(index)">
                 <p class="list-name" v-else>{{ text.text }}</p>
                 <p class="list-status done" v-if="text.status">Done</p>
                 <p class="list-status not-started" v-else>Not started</p>
-                <p class="list-button"><img src="../assets/pencil.png" @click="startEdit(index)"></p>
+                <p class="list-button"><img src="../assets/pencil.png" :class="{ loweropacity: text.editing }" @click="startEdit(index)"></p>
                 <p class="list-button"><img src="../assets/bin.png" @click="remove(index)"></p>
             </li>
         </template>
@@ -55,7 +55,7 @@ export default{
             }, 300)
         },
         doneEdit(index){
-            this.texts[index].editing = !this.texts[index].editing
+            this.texts[index].editing = false
             let editingCount = false
             this.texts.forEach((text) => {
                 if (text.editing){
@@ -69,11 +69,18 @@ export default{
             }
         },
         startEdit(index){
-            this.doneEdit(index)
-            this.$nextTick(() => {
-                document.querySelector(`#edit-input-${index}`).focus()
-            })
-            this.isEditing = true
+            if(this.texts[index].editing){
+                this.doneEdit(index)
+            } else {
+                this.texts.forEach((text) => {
+                    text.editing = false
+                })
+                this.texts[index].editing = true
+                this.$nextTick(() => {
+                    document.querySelector(`#edit-input-${index}`).focus()
+                })
+                this.isEditing = true
+            }
         }
     }
 }
@@ -142,8 +149,13 @@ ul{
         }
     }
 }
+
 .li-remove-animation{
     animation: remove .3s ease-out;
+}
+
+.loweropacity{
+    opacity: .3;
 }
 
 </style>
