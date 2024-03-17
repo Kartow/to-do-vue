@@ -34,13 +34,45 @@ export default{
             isEditing: false
         }
     },
+    mounted(){
+        this.mountLocalStorageData()
+    },
+    watch:{
+        texts: {
+            handler: function(){
+                this.updateLocalStorage()
+            },
+            deep: true
+        }
+    },
     methods:{
+        mountLocalStorageData(){
+            const data = JSON.parse(localStorage.getItem('texts'))
+            if (data){
+                this.texts = data
+            }
+        },
+        updateLocalStorage(){
+            localStorage.setItem('texts', JSON.stringify(this.texts))
+        },
+        getData(){
+            let data = JSON.parse(localStorage.getItem('texts'))
+            if(data){
+                return data
+            }
+            return false
+        },
         add(text){
-            this.texts.push({
+            let data = this.getData()
+            data = (data != false) ? data : []
+            data.push({
                 text: text,
                 status: false,
                 editing: false
             })
+            data = JSON.stringify(data)
+            localStorage.setItem('texts', data)
+            this.mountLocalStorageData()
         },
         remove(index){
             let lis = document.querySelectorAll('ul>li')
@@ -48,6 +80,7 @@ export default{
             lis[index+1].style.opacity = '0'
             setTimeout(()=>{
                 this.texts.splice(index, 1)
+                this.updateLocalStorage()
                 lis.forEach((li)=>{
                     li.classList = ''
                     li.style.opacity = '1'
@@ -67,6 +100,7 @@ export default{
             } else {
                 this.isEditing = false
             }
+            this.updateLocalStorage()
         },
         startEdit(index){
             if(this.texts[index].editing){
