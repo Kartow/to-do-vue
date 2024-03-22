@@ -4,18 +4,26 @@
   </div>
   <Inputarea @add="addToList"/>
   <List ref="List"/>
+  <Buttons @downloadTodos="downloadTodos" @importTodos="importTodos"/>
 </template>
 
 <script>
 import Inputarea from './components/Inputarea.vue'
 import List from './components/List.vue'
+import Buttons from './components/Buttons.vue'
 
 export default {
   name: 'App',
-  components: { Inputarea, List },
+  components: { Inputarea, List, Buttons },
   methods:{
     addToList(text){
       this.$refs.List.add(text)
+    },
+    downloadTodos(){
+      this.$refs.List.downloadTodos()
+    },
+    importTodos(){
+      this.$refs.List.importTodos()
     }
   }
 }
