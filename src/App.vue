@@ -32,6 +32,7 @@ export default {
       this.$refs.List.importTodos(file)
     },
     wrongFile(){
+      document.getElementById('file-input').value = ''
       document.querySelector('.popup').style.display = 'block'
       document.querySelector('.overlay').style.display = 'block'
     },
