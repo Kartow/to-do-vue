@@ -2,6 +2,7 @@
     <div id="buttons">
         <button @click="downloadTodos">Download to-dos</button>
         <button @click="importTodos">Import to-dos</button>
+        <input type="file" id="file-input" hidden>
     </div>
 </template>
 
@@ -12,7 +13,11 @@ export default{
             this.$emit('downloadTodos')
         },
         importTodos(){
-            this.$emit('importTodos')
+            const input = document.getElementById('file-input')
+            input.click()
+            input.addEventListener("change", () => {
+                this.$emit('importTodos', input.files[0])
+            })
         }
     }
 }

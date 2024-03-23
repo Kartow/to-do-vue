@@ -124,9 +124,22 @@ export default{
             a.download = 'todos.json'
             a.click()
             a.remove()
+            console.log(blob)
         },
-        importTodos(){
-            console.log('import')
+        importTodos(file){
+            const reader = new FileReader()
+            reader.readAsText(file, "UTF-8")
+            reader.onload = evt => {
+                if(file.type === "application/json"){
+                    console.log(evt.target.result)
+                    this.texts = JSON.parse(evt.target.result)
+                } else {
+                    this.$emit('wrongFile')
+                }
+            }
+            reader.onerror = evt => {
+                this.$emit('wrongFile')
+            }
         }
     }
 }

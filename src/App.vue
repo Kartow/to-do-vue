@@ -3,8 +3,14 @@
     <img src="./assets/logo.png">
   </div>
   <Inputarea @add="addToList"/>
-  <List ref="List"/>
+  <List ref="List" @wrongFile="wrongFile"/>
   <Buttons @downloadTodos="downloadTodos" @importTodos="importTodos"/>
+  <div class="overlay"></div>
+  <div class="popup">
+    <p class=close @click="closePopup">x</p>
+    <h1>An error occured while importing to-do's</h1>
+    <p>Check if you have uploaded the right file</p>
+  </div>
 </template>
 
 <script>
@@ -22,8 +28,16 @@ export default {
     downloadTodos(){
       this.$refs.List.downloadTodos()
     },
-    importTodos(){
-      this.$refs.List.importTodos()
+    importTodos(file){
+      this.$refs.List.importTodos(file)
+    },
+    wrongFile(){
+      document.querySelector('.popup').style.display = 'block'
+      document.querySelector('.overlay').style.display = 'block'
+    },
+    closePopup(){
+      document.querySelector('.popup').style.display = 'none'
+      document.querySelector('.overlay').style.display = 'none'
     }
   }
 }
@@ -34,16 +48,54 @@ export default {
   
 $fontsize: 20px;
 $mobilefontsize: 10px;
+$transition: .2s all ease-in-out;
+
+body{
+  display: flex;
+  flex-direction: column;
+  align-items: center ;
+}
 #app{
   width: 40vw;
   position: absolute;
   padding-top: 50px;
-  left: 50%;
-  transform: translateX(-50%);
   font-size: $fontsize;
   font-family: 'Mukta', sans-serif;
   input{
     font-family: 'Mukta', sans-serif;
+  }
+  .popup{
+    display: none;
+    background: rgba(255,255,255,.9);
+    padding: 2%;
+    width: 50%;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    line-height: 50px;
+    .close{
+      position: absolute;
+      top: 0;
+      right: 2%;
+      margin: 0;
+      user-select: none;
+      cursor: pointer;
+      font-size: 3rem;
+      transition: $transition;
+      &:hover{
+        text-shadow: rgba(0,0,0,.3) 0 0 10px;
+      }
+    }
+  }
+  .overlay{
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.7);
+    position: fixed;
+    top: 0;
+    left: 0;
   }
   #logo{
     width: 100%;
