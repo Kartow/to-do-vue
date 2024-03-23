@@ -37,7 +37,7 @@ $mobilefontsize: 10px;
 #app{
   width: 40vw;
   position: absolute;
-  top: 20%;
+  padding-top: 50px;
   left: 50%;
   transform: translateX(-50%);
   font-size: $fontsize;
